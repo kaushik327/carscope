@@ -1,5 +1,4 @@
 import os
-from IPython.display import Image
 from pathlib import Path
 from fastai.vision.data import ImageDataLoaders
 from fastai.vision.augment import Rotate, Zoom
@@ -21,6 +20,7 @@ def fit_model(data, learner, epochs, out_dir):
     learner.fit(epochs)
     learner.save(out_dir)
 
+# TODO: shouldn't require data
 def load_model(data, path):
     model = vision_learner(data, resnet34, metrics= accuracy)
     model.load(path)
