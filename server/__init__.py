@@ -23,6 +23,11 @@ def upload_image():
         }, 500
     
     basedir = os.path.abspath(os.path.dirname(__file__))
+
+    folder = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
     filename = os.path.join(
         basedir,
         app.config['UPLOAD_FOLDER'],
