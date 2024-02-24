@@ -1,3 +1,6 @@
 .DS_Store
 .env
 __pycache__
+
+# images uploaded to flask will go here
+file_uploads
