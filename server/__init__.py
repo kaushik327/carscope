@@ -18,6 +18,7 @@ def hello_world():
 def upload_image():
     # https://flask.palletsprojects.com/en/2.3.x/patterns/fileuploads/
     file = request.files['file']
+    prompt = request.values['prompt']
     if file.filename == '':
         return {
             "error": "No file uploaded"

@@ -80,19 +80,24 @@ class _ImagePageState extends State<ImagePage> {
   final ImagePicker picker = ImagePicker();
   late String summary;
   bool button_pressed = false;
+  String prompt = "";
 
   Future imageFromGallery() async {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(image!.path);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
   }
 
   Future imageFromCamera() async {
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = File(image!.path);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
   }
 
   Future classify() async {
@@ -106,6 +111,7 @@ class _ImagePageState extends State<ImagePage> {
         filename: '${uuid.v4()}.png'
       )
     );
+    request.fields['prompt'] = prompt;
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
     if (response.statusCode != 200) {
@@ -123,40 +129,56 @@ class _ImagePageState extends State<ImagePage> {
       appBar: AppBar(
         title: const Text('Take a picture!'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            (_image != null) ? Image.file(_image) : const SizedBox.shrink(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FilledButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              (_image != null) ? Image.file(_image) : const SizedBox.shrink(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FilledButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                    ),
+                    onPressed: imageFromCamera,
+                    child: const Text("From camera"),
                   ),
-                  onPressed: imageFromCamera,
-                  child: const Text("From camera"),
-                ),
-                const SizedBox(width: 27),
-                FilledButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                  const SizedBox(width: 27),
+                  FilledButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                    ),
+                    onPressed: imageFromGallery,
+                    child: const Text("From gallery"),
                   ),
-                  onPressed: imageFromGallery,
-                  child: const Text("From gallery"),
-                ),
-              ],
-            ),
-            FilledButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                ],
               ),
-              onPressed: classify,
-              child: const Text("Classify")
-            ),
-            button_pressed ? AIResponse(text: summary) : const SizedBox.shrink()
-          ]
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter a prompt (optional)',
+                  ),
+                  onChanged: (value) async {
+                    setState(() {
+                      prompt = value;
+                    });
+                  },
+                ),
+              ),
+              FilledButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                ),
+                onPressed: classify,
+                child: const Text("Classify")
+              ),
+              button_pressed ? AIResponse(text: summary) : const SizedBox.shrink()
+            ]
+          )
         )
       )
     );
