@@ -78,6 +78,8 @@ class _ImagePageState extends State<ImagePage> {
   var uuid = const Uuid();
   var _image;
   final ImagePicker picker = ImagePicker();
+  late String summary;
+  bool button_pressed = false;
 
   Future imageFromGallery() async {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -93,28 +95,27 @@ class _ImagePageState extends State<ImagePage> {
     });
   }
 
+  Future classify() async {
 
-
-  // Future<File> classifyImage() async {
-    // https://kashifchandio.medium.com/upload-images-to-a-rest-api-with-flutter-using-http-61713964e1c
-
-    // var request = http.MultipartRequest('POST', Uri.parse('http://127.0.0.1:5000/upload_image'));
-    // request.files.add(
-    //   http.MultipartFile(
-    //     'picture',
-    //     _image.readAsBytes().asStream(),
-    //     _image.lengthSync(),
-    //     filename: '${uuid.v4()}.png'
-    //   )
-    // );
-
-    // var streamedResponse = await request.send();
-    // var response = await http.Response.fromStream(streamedResponse);
-    // if (response.statusCode != 200) {
-    //   return "what";
-    // }
-    // return jsonDecode(response.body)['response'];
-  // }
+    var request = http.MultipartRequest('POST', Uri.parse('http://127.0.0.1:5000/upload_image'));
+    request.files.add(
+      http.MultipartFile(
+        'file',
+        _image.readAsBytes().asStream(),
+        _image.lengthSync(), 
+        filename: '${uuid.v4()}.png'
+      )
+    );
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode != 200) {
+      return "what";
+    }
+    setState(() {
+      summary = jsonDecode(response.body)['response'];
+      button_pressed = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +135,13 @@ class _ImagePageState extends State<ImagePage> {
               onPressed: imageFromGallery,
               child: const Text("From gallery"),
             ),
+            FilledButton(
+              onPressed: classify,
+              child: const Text("Classify")
+            ),
+            button_pressed 
+              ? Text(summary)
+              : const SizedBox.shrink()
           ]
         )
       )
