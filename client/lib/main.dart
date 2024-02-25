@@ -134,7 +134,14 @@ class _ImagePageState extends State<ImagePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              (_image != null) ? Image.file(_image) : const SizedBox.shrink(),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 256,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: (_image != null) ? Image.file(_image) : const SizedBox.shrink(),
+                )
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -192,6 +199,28 @@ class AIResponse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text);
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 200,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Container(
+          alignment: Alignment.topCenter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.blueGrey,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            )
+          )
+        )
+      )
+    );
   }
 }
