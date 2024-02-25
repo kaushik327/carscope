@@ -53,7 +53,6 @@ def upload_image():
     os.remove(filename)
 
     return {
-        "filename": filename,
         "car_label": car_label,
         "response": text_response
     }, 200
