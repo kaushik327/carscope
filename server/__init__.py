@@ -46,7 +46,7 @@ def upload_image():
     learner = load_model('server/models/resnet34_tuned_export.pkl')
     car_label = predict(learner, filename)
     
-    website_text = get_website_text(car_label)[:100]
+    website_text = ' '.join(get_website_text(car_label).split(' ')[:100])
     
     answerer = load_qa_pipeline()
     text_response = answerer(question= prompt, context= website_text)['answer']
