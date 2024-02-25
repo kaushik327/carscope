@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from transformers import pipeline
 
 def get_website_text(car_name: str):
     google_search_query = '+'.join(car_name.split(' '))
@@ -19,6 +20,13 @@ def get_website_text(car_name: str):
     car_text = car_soup.text
 
     return car_text
+
+def load_qa_pipeline():
+    return pipeline("question-answering", model="deepset/tinyroberta-squad2")
+
+def load_summay_pipeline():
+    return pipeline("summarization", model="google-t5/t5-base", tokenizer="google-t5/t5-base", framework="pt")
+    
 
 if __name__ == '__main__':
     print(get_website_text(input("car name: ")))

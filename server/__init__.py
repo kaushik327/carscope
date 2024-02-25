@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
+from server.vision.vision_base import load_model, predict
 
 UPLOAD_FOLDER = 'file_uploads'
 
@@ -35,8 +36,8 @@ def upload_image():
     )
     file.save(filename)
     
-    # TODO: call functions to run models
-    text_response = "Test response"
+    learner = load_model('server/models/resnet34_tuned_export.pkl')
+    text_response = predict(learner, filename)
 
     os.remove(filename)
 
