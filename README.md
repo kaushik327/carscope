@@ -2,6 +2,7 @@
 
 This app can take a picture of a car and determine the make and model of the car. Additionally, using LLMs, users can input questions about the car and get more information and a summary about the car.
 
-<div style="text-align:center">
-    ![Alt Text](images/carscope.jpg)
-</div>
+
+<p align="center">
+    <img src="images/carscope.jpg" alt="Alt Text">
+</p>
