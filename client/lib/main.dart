@@ -21,41 +21,42 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Background Image
+              const Image(
                 image: NetworkImage('https://scontent-ord5-1.xx.fbcdn.net/v/t1.15752-9/429600448_256598337490606_2217278646480399904_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=7rYUvId8dIcAX-i15Up&_nc_ht=scontent-ord5-1.xx&oh=03_AdSWCycfENwVPaECIGKgou4CF40Zfc4pPRKEJ1uK6cVRSQ&oe=66010E47'), // Replace with your image URL
-                fit: BoxFit.cover,
+                height: 384
               ),
-            ),
-          ),
-          // Content
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Text(
-                  'Welcome to Car Scope!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
+              // Content
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Welcome to CarScope!',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/second');
+                      },
+                      child: const Text('Start'),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/second');
-                  },
-                  child: const Text('Go to Second Page'),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
