@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
         children: [
           // Background Image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage('https://scontent-ord5-1.xx.fbcdn.net/v/t1.15752-9/429600448_256598337490606_2217278646480399904_n.png?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=7rYUvId8dIcAX-i15Up&_nc_ht=scontent-ord5-1.xx&oh=03_AdSWCycfENwVPaECIGKgou4CF40Zfc4pPRKEJ1uK6cVRSQ&oe=66010E47'), // Replace with your image URL
                 fit: BoxFit.cover,
@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Welcome to Car Scope!',
                   style: TextStyle(
                     fontSize: 24,
@@ -45,12 +45,12 @@ class HomePage extends StatelessWidget {
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/second');
                   },
-                  child: Text('Go to Second Page'),
+                  child: const Text('Go to Second Page'),
                 ),
               ],
             ),
@@ -66,9 +66,9 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Page'),
+        title: const Text('Second Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'This is the Second Page',
           style: TextStyle(fontSize: 24),
