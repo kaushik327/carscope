@@ -45,10 +45,10 @@ def upload_image():
     
     if prompt == '':
         summarizer = load_summay_pipeline()
-        text_response = summarizer(website_text, min_length=5, max_length=50)
+        text_response = summarizer(website_text, min_length=5, max_length=50)[0]['summary_text']
     else:
         answerer = load_qa_pipeline()
-        text_response = answerer(question= prompt, context= website_text)
+        text_response = answerer(question= prompt, context= website_text)['answer']
         
     os.remove(filename)
 
