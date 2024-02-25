@@ -79,6 +79,7 @@ class _ImagePageState extends State<ImagePage> {
   var _image;
   final ImagePicker picker = ImagePicker();
   late String summary;
+  late String carlabel;
   bool button_pressed = false;
   String prompt = "";
 
@@ -102,6 +103,10 @@ class _ImagePageState extends State<ImagePage> {
 
   Future classify() async {
 
+    if (_image == null || prompt == "") {
+      return;
+    }
+
     var request = http.MultipartRequest('POST', Uri.parse('http://127.0.0.1:5000/upload_image'));
     request.files.add(
       http.MultipartFile(
@@ -115,9 +120,10 @@ class _ImagePageState extends State<ImagePage> {
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
     if (response.statusCode != 200) {
-      return "what";
+      return;
     }
     setState(() {
+      carlabel = jsonDecode(response.body)['car_label'];
       summary = jsonDecode(response.body)['response'];
       button_pressed = true;
     });
@@ -167,7 +173,7 @@ class _ImagePageState extends State<ImagePage> {
                 child: TextField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Enter a prompt (optional)',
+                    hintText: 'Enter a prompt',
                   ),
                   onChanged: (value) async {
                     setState(() {
@@ -183,7 +189,7 @@ class _ImagePageState extends State<ImagePage> {
                 onPressed: classify,
                 child: const Text("Classify")
               ),
-              button_pressed ? AIResponse(text: summary) : const SizedBox.shrink()
+              button_pressed ? AIResponse(text: summary, label: carlabel) : const SizedBox.shrink()
             ]
           )
         )
@@ -193,9 +199,10 @@ class _ImagePageState extends State<ImagePage> {
 }
 
 class AIResponse extends StatelessWidget {
-  const AIResponse({super.key, required this.text});
+  const AIResponse({super.key, required this.text, required this.label});
 
   final String text;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -212,11 +219,25 @@ class AIResponse extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+            child: Column(
+                children: [
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Response: ${text}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16
+                    ),
+                  ),
+                ]
             )
           )
         )
