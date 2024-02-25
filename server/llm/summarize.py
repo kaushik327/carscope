@@ -28,7 +28,6 @@ def get_website_text(car_name: str):
     car_request = requests.get(f'https://www.kbb.com/{brand_name}/{model_name}/{year}')
     car_soup = BeautifulSoup(car_request.text)
     car_text = car_soup.text
-    print(f'https://www.kbb.com/{brand_name}/{model_name}/{year}')
     return car_text
 
 def load_qa_pipeline():
