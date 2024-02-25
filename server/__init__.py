@@ -41,11 +41,11 @@ def upload_image():
     learner = load_model('server/models/resnet34_tuned_export.pkl')
     car_label = predict(learner, filename)
     
-    website_text = get_website_text(car_label)
+    website_text = get_website_text(car_label)[:100]
     
-    if prompt == '':
+    if prompt == 'wef':
         summarizer = load_summay_pipeline()
-        text_response = summarizer(website_text, min_length=5, max_length=50)[0]['summary_text']
+        text_response = summarizer(website_text, min_length=5, max_length=10)[0]['summary_text']
     else:
         answerer = load_qa_pipeline()
         text_response = answerer(question= prompt, context= website_text)['answer']
