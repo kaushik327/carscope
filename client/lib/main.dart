@@ -127,6 +127,7 @@ class _ImagePageState extends State<ImagePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            (_image != null) ? Image.file(_image) : const SizedBox.shrink(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
