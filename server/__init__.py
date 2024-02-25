@@ -43,7 +43,7 @@ def upload_image():
     )
     file.save(filename)
     
-    learner = load_model('server/models/resnet34_tuned_export.pkl')
+    learner = load_model('server/models/densenet201_tuned_export.pkl')
     car_label = predict(learner, filename)
     
     website_text = ' '.join(get_website_text(car_label).split(' ')[:100])
