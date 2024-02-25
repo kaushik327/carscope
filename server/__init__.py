@@ -25,6 +25,11 @@ def upload_image():
             "error": "No file uploaded"
         }, 500
     
+    if prompt == '' or not prompt:
+        return {
+            "error": "No prompt uploaded"
+        }, 500
+    
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     folder = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
@@ -43,13 +48,9 @@ def upload_image():
     
     website_text = get_website_text(car_label)[:100]
     
-    if prompt == 'wef':
-        summarizer = load_summay_pipeline()
-        text_response = summarizer(website_text, min_length=5, max_length=10)[0]['summary_text']
-    else:
-        answerer = load_qa_pipeline()
-        text_response = answerer(question= prompt, context= website_text)['answer']
-        
+    answerer = load_qa_pipeline()
+    text_response = answerer(question= prompt, context= website_text)['answer']
+    
     os.remove(filename)
 
     return {
