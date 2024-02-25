@@ -187,7 +187,7 @@ class _ImagePageState extends State<ImagePage> {
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
                 onPressed: classify,
-                child: const Text("Classify")
+                child: const Text("Answer")
               ),
               button_pressed ? AIResponse(text: summary, label: carlabel) : const SizedBox.shrink()
             ]
