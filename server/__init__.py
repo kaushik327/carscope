@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from server.vision.vision_base import load_model, predict
+from server.llm.summarize import load_qa_pipeline, load_summay_pipeline, get_website_text
 
 UPLOAD_FOLDER = 'file_uploads'
 
@@ -38,11 +39,22 @@ def upload_image():
     file.save(filename)
     
     learner = load_model('server/models/resnet34_tuned_export.pkl')
-    text_response = predict(learner, filename)
-
+    car_label = predict(learner, filename)
+    
+    website_text = get_website_text(car_label)
+    
+    if prompt == '':
+        summarizer = load_summay_pipeline()
+        text_response = summarizer(website_text, min_length=5, max_length=50)
+    else:
+        answerer = load_qa_pipeline()
+        text_response = answerer(question= prompt, context= website_text)
+        
     os.remove(filename)
 
     return {
+        "filename": filename,
+        "car_label": car_label,
         "response": text_response
     }, 200
     
