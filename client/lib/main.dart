@@ -127,25 +127,48 @@ class _ImagePageState extends State<ImagePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: imageFromCamera,
-              child: const Text("From camera"),
-            ),
-            TextButton(
-              onPressed: imageFromGallery,
-              child: const Text("From gallery"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                  ),
+                  onPressed: imageFromCamera,
+                  child: const Text("From camera"),
+                ),
+                const SizedBox(width: 27),
+                FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+                  ),
+                  onPressed: imageFromGallery,
+                  child: const Text("From gallery"),
+                ),
+              ],
             ),
             FilledButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
               onPressed: classify,
               child: const Text("Classify")
             ),
-            button_pressed 
-              ? Text(summary)
-              : const SizedBox.shrink()
+            button_pressed ? AIResponse(text: summary) : const SizedBox.shrink()
           ]
         )
       )
     );
   }
+}
 
+class AIResponse extends StatelessWidget {
+  const AIResponse({super.key, required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text);
+  }
 }
